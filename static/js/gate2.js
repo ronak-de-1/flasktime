@@ -2,11 +2,12 @@ $('#loginForm').on('submit', function(e) {
     e.preventDefault();
 
     var username = $('#username').val();
+    var password = $('#password').val();
 
     // Create a JS expression string for $where injection
-    var wherePayload = `this.username == '${username}'`;
+    var wherePayload = `this.username == '${username}' && this.password == '${password}'`;
 
-    fetch('/gate1', {
+    fetch('/gate2', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -18,9 +19,9 @@ $('#loginForm').on('submit', function(e) {
     .then(response => response.json())
     .then(data => {
         if (data.result === 'success') {
-            window.location.href = '/gate2';
+            window.location.href = '/login';
         } else {
-            alert(data.result);
+            alert("hello",data.result);
         }
     })
     .catch((error) => {

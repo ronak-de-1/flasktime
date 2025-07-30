@@ -44,6 +44,18 @@ def prizes():
 def entrance():
     return render_template('entrance.html')
 
+@app.route('/gate1', methods=['GET','POST']) # Added GET method
+def gate1():
+    if request.method == 'GET':
+        return render_template('gate1.html')
+    return jsonify({'result': 'success'})
+
+@app.route('/gate2', methods=['GET','POST']) # Added GET method
+def gate2():
+    if request.method == 'GET':
+        return render_template('gate2.html')
+    return jsonify({'result': 'success'})
+
 
 
 @app.route('/gate-check', methods=['POST'])
@@ -52,7 +64,7 @@ def gate_check():
 
     # Example logic — change as needed
     gate_code = data.get('gateCode')
-    if gate_code == 'letmein':
+    if gate_code == 'true':
         return jsonify({'valid': True})
     else:
         return jsonify({'valid': False})
