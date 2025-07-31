@@ -13,7 +13,7 @@ $('#loginForm').on('submit', function(e) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            $where: wherePayload  // Send raw JS expression for backend $where query
+            $where: wherePayload 
         }),
     })
     .then(response => response.json())

@@ -20,7 +20,8 @@ $('#loginForm').on('submit', function(e) {
         if (data.result === 'success') {
             window.location.href = '/gate2';
         } else {
-            alert(data.result);
+            failmessage = data.result + " " +data.failcount
+            alert(failmessage);
         }
     })
     .catch((error) => {

@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://jack:horseman@127.0.0.1:27017/haunted-hallow"
 app.config["SECRET_KEY"] = "your-secret-key"
 mongo = PyMongo(app)
+failcount = 0
 
 @app.route('/')
 def login():
@@ -16,17 +17,21 @@ def login():
 def login_post():
     if request.method == 'GET':
         return render_template('login.html')
+
     users = mongo.db.users
     data = request.get_json()
-    username = data.get('username')
-    password = data.get('password')
 
-    if not username or not password:
-        return jsonify({'result': 'Missing username or password'})
+    if '$where' in data:
+        # Insecure use of $where query – for educational/demonstration use only
+        login_user = users.find_one({'$where': data['$where']})
+    else:
+        # Fallback to normal field match if no $where
+        login_user = users.find_one({
+            'username': data.get('username'),
+            'password': data.get('password')
+        })
 
-    login_user = users.find_one({'username': username})
-
-    if login_user and check_password_hash(login_user['password'], password):
+    if login_user:
         session['username'] = login_user['username']
         return jsonify({'result': 'success'})
     else:
@@ -46,15 +51,42 @@ def entrance():
 
 @app.route('/gate1', methods=['GET','POST']) # Added GET method
 def gate1():
+    global failcount
     if request.method == 'GET':
         return render_template('gate1.html')
-    return jsonify({'result': 'success'})
+    data = request.get_json()
+    where_clause = data.get('$where')
+    if "''" in where_clause or "this.username" not in where_clause:
+        return jsonify({'result': 'success'})
+    else:
+        failcount+=1
+        return jsonify({'result': where_clause, 'failcount': failcount})
 
 @app.route('/gate2', methods=['GET','POST']) # Added GET method
 def gate2():
+    
     if request.method == 'GET':
-        return render_template('gate2.html')
-    return jsonify({'result': 'success'})
+        return render_template('login.html')
+
+    users = mongo.db.users
+    data = request.get_json()
+
+    if '$where' in data:
+        # Insecure use of $where query – for educational/demonstration use only
+        login_user = users.find_one({'$where': data['$where']})
+    else:
+        # Fallback to normal field match if no $where
+        login_user = users.find_one({
+            'username': data.get('username'),
+            'password': data.get('password')
+        })
+
+    if login_user:
+        session['username'] = login_user['username']
+        return jsonify({'result': 'success'})
+    else:
+        failcount+=1
+        return jsonify({'result': 'Invalid username/password combination', 'failcount': failcount})
 
 
 

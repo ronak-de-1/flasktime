@@ -13,7 +13,7 @@ $('#loginForm').on('submit', function(e) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            $where: wherePayload  // Send raw JS expression for backend $where query
+            $where: wherePayload 
         }),
     })
     .then(response => response.json())
@@ -21,7 +21,8 @@ $('#loginForm').on('submit', function(e) {
         if (data.result === 'success') {
             window.location.href = '/login';
         } else {
-            alert("hello",data.result);
+            failmessage = data.result + " " +data.failcount
+            alert(failmessage);
         }
     })
     .catch((error) => {
