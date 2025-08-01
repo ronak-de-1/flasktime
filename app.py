@@ -8,55 +8,83 @@ app.config["MONGO_URI"] = "mongodb://jack:horseman@127.0.0.1:27017/haunted-hallo
 app.config["SECRET_KEY"] = "your-secret-key"
 mongo = PyMongo(app)
 failcount = 0
+n_completed = 0
+lab_route = ['entrance','gate1','gate2','login','prizes']
+from py_mini_racer import py_mini_racer
+
+
+from py_mini_racer import py_mini_racer
+
+def is_where_always_true(where_clause):
+    if where_clause is None:
+        return False
+
+    ctx = py_mini_racer.MiniRacer()
+    try:
+        ctx.eval("""
+            var thisContext = new Proxy({}, {
+                get: function(target, prop) {
+                    return '---------';
+                }
+            });
+        """)
+        if callable(where_clause):
+            return where_clause() is True
+
+        if isinstance(where_clause, str):
+            code = where_clause.strip()
+
+            if code.startswith('function') or code.startswith('() =>') or code.startswith('(function') or code.startswith('()'):
+                code = f'({code})()'
+
+            # Replace all instances of '!=' with '=='
+            code = code.replace('!=', '==')
+
+            # Replace 'this.' with 'thisContext.'
+            code = code.replace('this.', 'thisContext.')
+
+            result = ctx.eval(code)
+            return result is True
+    except Exception:
+        return False
+    return False
+
 
 @app.route('/')
 def login():
+    
     return render_template('entrance.html')
 
-@app.route('/login', methods=['GET','POST'])
-def login_post():
-    if request.method == 'GET':
-        return render_template('login.html')
-
-    users = mongo.db.users
-    data = request.get_json()
-
-    if '$where' in data:
-        # Insecure use of $where query – for educational/demonstration use only
-        login_user = users.find_one({'$where': data['$where']})
-    else:
-        # Fallback to normal field match if no $where
-        login_user = users.find_one({
-            'username': data.get('username'),
-            'password': data.get('password')
-        })
-
-    if login_user:
-        session['username'] = login_user['username']
-        return jsonify({'result': 'success'})
-    else:
-        return jsonify({'result': 'Invalid username/password combination'})
-
-@app.route('/prizes')
-def prizes():
-    if 'username' in session:
-        results = mongo.db.prizes.find({})
-        return render_template('prizes.html', results=results)
-    else:
-        return redirect(url_for('login'))
-
-@app.route('/entrance', methods=['GET']) # Added GET method
+@app.route('/entrance', methods=['GET']) 
 def entrance():
     return render_template('entrance.html')
+
+@app.route('/gate-check', methods=['POST'])
+def gate_check():
+    global n_completed
+    data = request.get_json()
+
+    # Example logic — change as needed
+    gate_code = data.get('gateCode')
+    if gate_code == 'true':
+        n_completed = max(1,n_completed)
+        return jsonify({'valid': True}) 
+    else:
+        return jsonify({'valid': False})
 
 @app.route('/gate1', methods=['GET','POST']) # Added GET method
 def gate1():
     global failcount
+    global n_completed; global lab_route 
     if request.method == 'GET':
-        return render_template('gate1.html')
+        if n_completed >= 1:
+            return render_template('gate1.html')
+        else:
+            return redirect(url_for(lab_route[n_completed]))
     data = request.get_json()
     where_clause = data.get('$where')
     if "''" in where_clause or "this.username" not in where_clause:
+        n_completed = max(2,n_completed)
         return jsonify({'result': 'success'})
     else:
         failcount+=1
@@ -64,39 +92,78 @@ def gate1():
 
 @app.route('/gate2', methods=['GET','POST']) # Added GET method
 def gate2():
-    
+    global failcount
+    global n_completed; global lab_route 
     if request.method == 'GET':
-        return render_template('login.html')
+        if n_completed >= 2:
+            return render_template('gate2.html')
+        else:
+            return redirect(url_for(lab_route[n_completed]))
 
     users = mongo.db.users
     data = request.get_json()
 
-    if '$where' in data:
-        # Insecure use of $where query – for educational/demonstration use only
-        login_user = users.find_one({'$where': data['$where']})
-    else:
-        # Fallback to normal field match if no $where
-        login_user = users.find_one({
-            'username': data.get('username'),
-            'password': data.get('password')
-        })
+    where_clause = data.get('$where')
+
+    if not where_clause:
+        return jsonify({'result': 'Missing $where clause'}), 400
+    try:
+        login_user = users.find_one({'$where': where_clause})
+    except Exception as e:
+        return jsonify({'result': 'MongoDB error', 'error': str(e)}), 400
 
     if login_user:
-        session['username'] = login_user['username']
+        session['username'] = login_user.get('username', 'unknown')
+        n_completed = max(3,n_completed)
         return jsonify({'result': 'success'})
     else:
         failcount+=1
         return jsonify({'result': 'Invalid username/password combination', 'failcount': failcount})
 
+@app.route('/login', methods=['GET', 'POST'])
+def login_post():
+    global n_completed; global lab_route 
+    if request.method == 'GET':
+        if n_completed >= 3:
+            return render_template('login.html')
+        else:
+            return redirect(url_for(lab_route[n_completed]))
 
 
-@app.route('/gate-check', methods=['POST'])
-def gate_check():
     data = request.get_json()
+    where_clause = data.get('$where')
+    if is_where_always_true(where_clause) or ('this.username' not in where_clause or 'this.password' not in where_clause):
+        return jsonify({'result': 'THERE IS NO ESCAPE'})
+  
+    users = mongo.db.users
+    if not where_clause:
+        return jsonify({'result': 'Missing $where clause'}), 400
 
-    # Example logic — change as needed
-    gate_code = data.get('gateCode')
-    if gate_code == 'true':
-        return jsonify({'valid': True})
+    try:
+        login_user = users.find_one({'$where': where_clause})
+    except Exception as e:
+        return jsonify({'result': 'MongoDB error', 'error': str(e)}), 400
+
+    if login_user:
+        session['username'] = login_user.get('username', 'unknown')
+        n_completed = max(4,n_completed)
+        return jsonify({'result': 'success'})
     else:
-        return jsonify({'valid': False})
+        return jsonify({'result': 'Invalid username/password combination'})
+
+@app.route('/prizes')
+def prizes():
+    global n_completed; global lab_route 
+    if n_completed >= 4:
+        results = mongo.db.prizes.find({})
+        return render_template('prizes.html', results=results)
+    else:
+        return redirect(url_for(lab_route[n_completed]))
+
+@app.route('/exit')
+def exit():
+    return render_template('exit.html')
+
+@app.route('/trap')
+def trap():
+    return render_template('trap.html')
