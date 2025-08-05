@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('escapeButton').addEventListener('click', function() {
         // Example payload — you can change this to anything meaningful
         const payload = {
-            gateCode: "false", 
+            allowed_to_leave: "false", 
         };
 
         fetch('/gate-check', {
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = '/gate1';
             } else {
                 $('#failCountMessage').text(data.message);
-                alert(data.message);
+                alert(data.alert_message);
             }
         })
         .catch(error => {

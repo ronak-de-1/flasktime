@@ -28,7 +28,6 @@ body {
     background: var(--grey-light);
 }
 
-/* Typography */
 .center {
     text-align: center;
 }
@@ -172,30 +171,18 @@ input[type=submit] {
     display: block;
 }
 
-/* Register section with full-screen background image */
-.register {
-    width: 100%;
-    height: 100vh;
-    background: linear-gradient(rgba(16, 16, 16, 0.6), rgba(26, 26, 26, 0.6)),
-                url('../images/register-photo.jpg') center center / cover no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-/* Centered content block */
+
 .register-content {
     text-align: center;
     color: var(--almost-white);
     padding: 4rem 2rem;
     background-color: rgba(0, 0, 0, 0.4);
-    /* Optional: makes text stand out */
     border-radius: 1rem;
     max-width: 600px;
     width: 100%;
 }
 
-/* Heading styling */
 .register-heading {
     font-family: Fruktur, serif;
      font-size: 4rem;
@@ -211,8 +198,13 @@ input[type=submit] {
     color: var(--white);
     margin-bottom: 2rem;
 }
+.register-low-heading-2 {
+    font-family: Fruktur, serif;
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 2rem;
+}
 
-/* Escape button – significantly larger */
 .escape-btn {
     font-size: 2rem;
     padding: 1rem 3rem;
@@ -230,12 +222,29 @@ input[type=submit] {
 .escape-btn:hover {
     background: var(--primary-dark);
     transform: scale(1.05);
+    color: #8B0000; 
 }
 
 #failCountMessage {
   font-family: 'Creepster', cursive;
   
   font-size: 1.6em;
+
+  font-weight: normal;
+  
+  color: #a10e0e;
+
+  text-shadow: 1px 1px 2px #680909;
+
+  text-align: center;
+  margin: 20px 0;
+  padding: 10px;
+
+}
+.trap {
+  font-family: 'Creepster', cursive;
+  
+  font-size: 4em;
 
   font-weight: normal;
   

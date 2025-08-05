@@ -1,10 +1,10 @@
 $('#loginForm').on('submit', function(e) {
     e.preventDefault();
 
-    var username = $('#username').val();
+    var name = $('#name').val();
 
     // Create a JS expression string for $where injection
-    var wherePayload = `this.username == '${username}'`;
+    var wherePayload = `this.name == '${name}'`;
 
     fetch('/gate1', {
         method: 'POST',
@@ -21,7 +21,7 @@ $('#loginForm').on('submit', function(e) {
             window.location.href = '/gate2';
         } else {
             $('#failCountMessage').text(data.message);
-            alert(data.message);
+            alert(data.alert_message);
         }
     })
     .catch((error) => {

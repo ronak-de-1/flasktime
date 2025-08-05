@@ -68,7 +68,7 @@ def is_where_always_true(where_clause:str)->bool:
 
 
 @app.route('/')
-def login():
+def home_entrance():
     
     return render_template('entrance.html')
 
@@ -82,16 +82,15 @@ def gate_check():
     global n_completed
     data = request.get_json()
 
-    # Example logic — change as needed
-    gate_code = data.get('gateCode')
+    gate_code = data.get('allowed_to_leave')
     if gate_code == 'true':
         n_completed = max(1,n_completed)
         return jsonify({'result': 'success'}) 
     else:
         failcount+=1
-        return jsonify({'result': 'fail', 'message': spooky_message(failcount)})
+        return jsonify({'result': 'fail', 'message': spooky_message(failcount), 'alert_message': "We think you will let you escape that easy?"})
 
-@app.route('/gate1', methods=['GET','POST']) # Added GET method
+@app.route('/gate1', methods=['GET','POST'])
 def gate1():
     global failcount
     global n_completed; global lab_route 
@@ -101,15 +100,15 @@ def gate1():
         else:
             return redirect(url_for(lab_route[n_completed]))
     data = request.get_json()
-    where_clause = data.get('$where')
+    where_clause = data.get('$where').replace("incantation", "password").replace("name", "username")
     if "''" in where_clause or "this.username" not in where_clause:
         n_completed = max(2,n_completed)
         return jsonify({'result': 'success'})
     else:
         failcount+=1
-        return jsonify({'result': where_clause, 'message': spooky_message(failcount)})
+        return jsonify({'result': 'fail', 'message': spooky_message(failcount), 'alert_message': "Is that a named human trying to escape? How pitiful"})
 
-@app.route('/gate2', methods=['GET','POST']) # Added GET method
+@app.route('/gate2', methods=['GET','POST']) 
 def gate2():
     global failcount
     global n_completed; global lab_route 
@@ -122,14 +121,14 @@ def gate2():
     users = mongo.db.users
     data = request.get_json()
 
-    where_clause = data.get('$where')
+    where_clause = data.get('$where').replace("incantation", "password").replace("name", "username")
 
     if not where_clause:
-        return jsonify({'result': 'Missing $where clause'}), 400
+        return jsonify({'result': 'Missing $where clause', 'message': spooky_message(failcount), 'alert_message': "$where is your name lost soul?"}), 400
     try:
         login_user = users.find_one({'$where': where_clause})
     except Exception as e:
-        return jsonify({'result': 'MongoDB error', 'error': str(e)}), 400
+        return jsonify({'result': 'MongoDB error', 'error': str(e), 'alert_message': 'MongoDB error', 'error': str(e)}), 400
 
     if login_user:
         session['username'] = login_user.get('username', 'unknown')
@@ -137,22 +136,23 @@ def gate2():
         return jsonify({'result': 'success'})
     else:
         failcount+=1
-        return jsonify({'result': 'Invalid username/password combination', 'message': spooky_message(failcount)})
+        return jsonify({'result': 'Invalid username/password combination', 'message': spooky_message(failcount), 'alert_message': "This soul's incantation or name is not permitted to leave"})
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/gate3', methods=['GET', 'POST'])
 def login_post():
+    global failcount
     global n_completed; global lab_route 
     if request.method == 'GET':
         if n_completed >= 0:
-            return render_template('login.html')
+            return render_template('gate3.html')
         else:
             return redirect(url_for(lab_route[n_completed]))
 
 
     data = request.get_json()
-    where_clause = data.get('$where')
+    where_clause = data.get('$where').replace("incantation", "password").replace("name", "username")
     if is_where_always_true(where_clause) or ('this.username' not in where_clause or 'this.password' not in where_clause):
-        return jsonify({'result': 'THERE IS NO ESCAPE'})
+        return jsonify({'result': 'THERE IS NO ESCAPE', 'message': spooky_message(failcount) , 'alert_message':'THERE IS NO ESCAPE'})
   
     users = mongo.db.users
     if not where_clause:
@@ -161,7 +161,7 @@ def login_post():
     try:
         login_user = users.find_one({'$where': where_clause})
     except Exception as e:
-        return jsonify({'result': 'MongoDB error', 'error': str(e)}), 400
+        return jsonify({'result': 'MongoDB error', 'error': str(e), 'alert_message': 'MongoDB error', 'error': str(e)}), 400
 
     if login_user:
         session['username'] = login_user.get('username', 'unknown')
@@ -169,20 +169,21 @@ def login_post():
         return jsonify({'result': 'success'})
     else:
         failcount+=1
-        return jsonify({'result': 'Invalid username/password combination', 'message': spooky_message(failcount)})
+        return jsonify({'result': 'Invalid username/password combination', 'message': spooky_message(failcount), 'alert_message': "This soul's incantation or name is not permitted to leave"})
 
-@app.route('/prizes')
-def prizes():
-    global n_completed; global lab_route 
-    if n_completed >= 0:
-        results = mongo.db.prizes.find({})
-        return render_template('prizes.html', results=results)
-    else:
-        return redirect(url_for(lab_route[n_completed]))
+# @app.route('/prizes')
+# def prizes():
+#     global n_completed; global lab_route 
+#     if n_completed >= 0:
+#         results = mongo.db.prizes.find({})
+#         return render_template('prizes.html', results=results)
+#     else:
+#         return redirect(url_for(lab_route[n_completed]))
 
 @app.route('/exit')
 def exit():
-    return render_template('exit.html')
+    if n_completed >= 0:
+        return render_template('exit.html')
 
 @app.route('/trap')
 def trap():

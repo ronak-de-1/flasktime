@@ -1,11 +1,10 @@
 $('#loginForm').on('submit', function(e) {
     e.preventDefault();
 
-    var username = $('#username').val();
-    var password = $('#password').val();
+    var name = $('#name').val();
+    var incantation = $('#incantation').val();
 
-    // Create a JS expression string for $where injection
-    var wherePayload = `this.username == '${username}' && this.password == '${password}'`;
+    var wherePayload = `this.name == '${name}' && this.incantation == '${incantation}'`;
 
     fetch('/gate2', {
         method: 'POST',
@@ -19,10 +18,10 @@ $('#loginForm').on('submit', function(e) {
     .then(response => response.json())
     .then(data => {
         if (data.result === 'success') {
-            window.location.href = '/login';
+            window.location.href = '/gate3';
         } else {
             $('#failCountMessage').text(data.message);
-            alert(data.message);
+            alert(data.alert_message);
         }
     })
     .catch((error) => {

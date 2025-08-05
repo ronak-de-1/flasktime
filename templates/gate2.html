@@ -3,24 +3,44 @@
   <head>
     <meta charset="utf-8">
     <title>Carnival Chaos Login</title>
-    <link rel="stylesheet" href="/static/css/newstyle1.css">
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .register {
+        width: 100%;
+        height: 100vh;
+
+        background: linear-gradient(rgba(16, 16, 16, 0.6), rgba(26, 26, 26, 0.6)),
+                    url('/static/images/room3.jpg') center center / cover no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+    </style>
   </head>
   <body>
     <section class="register">
       <div class="register-content">
         <h1 class="register-heading">Lightning manor</h1>
-        <h1 class="register-low-heading">Admin Login</h1>
+        <h1 class="register-low-heading">Ghoul's entrance</h1>
+        <h1 class="register-low-heading-2">You think you can get through here? Only the souls claimed by this house can pass this point</h1>
         <div id="failCountMessage"></div>
         <form id="loginForm">
           <div class="input-group">
             <label for="username" class="field-label">Username</label>
-            <input type="text" class="field" id="username" required>
+            <input type="text" class="field" id="name" required>
           </div>
           <div class="input-group">
-            <label for="password" class="field-label">Password</label>
-            <input type="password" class="field" id="password" required>
+            <label for="password" class="field-label">Incantation</label>
+            <input type="password" class="field" id="incantation" required>
           </div>
-          <input type="submit" value="Log In" class="btn">
+          <input type="submit" value="Escape" class="btn escape-btn">
         </form>
         <p style="color: white;">Token: scary</p>
       </div>

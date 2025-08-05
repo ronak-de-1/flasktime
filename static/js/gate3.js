@@ -1,13 +1,12 @@
 $('#loginForm').on('submit', function(e) {
     e.preventDefault();
 
-    var username = $('#username').val();
-    var password = $('#password').val();
+    var name = $('#name').val();
+    var incantation = $('#incantation').val();
 
-    // Create a JS expression string for $where injection
-    var wherePayload = `this.username == '${username}' && this.password == '${password}'`;
+    var wherePayload = `this.name == '${name}' && this.incantation == '${incantation}'`;
 
-    fetch('/login', {
+    fetch('/gate3', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -22,7 +21,7 @@ $('#loginForm').on('submit', function(e) {
             window.location.href = '/exit';
         } else {
             $('#failCountMessage').text(data.message);
-            alert(data.message);
+            alert(data.alert_message);
         }
     })
     .catch((error) => {
