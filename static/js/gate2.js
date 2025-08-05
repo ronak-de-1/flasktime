@@ -21,8 +21,8 @@ $('#loginForm').on('submit', function(e) {
         if (data.result === 'success') {
             window.location.href = '/login';
         } else {
-            failmessage = data.result + " " +data.failcount
-            alert(failmessage);
+            $('#failCountMessage').text(data.message);
+            alert(data.message);
         }
     })
     .catch((error) => {

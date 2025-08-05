@@ -3,33 +3,31 @@
   <head>
     <meta charset="utf-8">
     <title>Carnival Chaos Login</title>
-    <link rel="stylesheet" href="/static/css/style1.css">
+    <link rel="stylesheet" href="/static/css/newstyle1.css">
   </head>
   <body>
     <section class="register">
-      <div class="register-wrapper">
-          <div class="register-left"></div>
-          <div class="register-right">
-              <h1 class="register-heading">Carnival Chaos</h1>
-              <h1 class="register-low-heading">Admin Login</h1>
-              <form id="loginForm">
-                  <div class="input-group">
-                      <label for="username" class="field-label">Username</label>
-                      <input type="text" class="field" id="username" required>
-                  </div>
-                  <div class="input-group">
-                      <label for="password" class="field-label">Password</label>
-                      <input type="password" class="field" id="password" required>
-                  </div>
-                  <input type="submit" value="Log In" class="btn">
-              </form>
+      <div class="register-content">
+        <h1 class="register-heading">Lightning manor</h1>
+        <h1 class="register-low-heading">Admin Login</h1>
+        <div id="failCountMessage"></div>
+        <form id="loginForm">
+          <div class="input-group">
+            <label for="username" class="field-label">Username</label>
+            <input type="text" class="field" id="username" required>
           </div>
+          <div class="input-group">
+            <label for="password" class="field-label">Password</label>
+            <input type="password" class="field" id="password" required>
+          </div>
+          <input type="submit" value="Log In" class="btn">
+        </form>
+        <p style="color: white;">Token: skeletons</p>
       </div>
-  </section>
-</div>
+    </section>
 
     <script src="/static/js/jquery-3.5.1.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/login.js"></script>
-</body>
+  </body>
 </html>

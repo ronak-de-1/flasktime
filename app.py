@@ -10,12 +10,29 @@ mongo = PyMongo(app)
 failcount = 0
 n_completed = 0
 lab_route = ['entrance','gate1','gate2','login','prizes']
-from py_mini_racer import py_mini_racer
+message_n = [1,2,3,5,8,13]
+messages = [
+    "Hey, what's that sound. Do you really think you can leave this place?",
+    "The undead spirits are watching your every move and grow restless",
+    "Stop this now, there is no exit", 
+    "We shall take your soul, there is no point trying to resist", 
+    "You hear our laughter echo through the halls, we shall claim your soul", 
+    "We are hungry for new souls, stop this NOW", 
+    "WE SEE YOU, AND WE ARE COMING TO CLAIM YOUR SOUL NOW"
+]
+def spooky_message(numfail:int)->str: 
+    for i in range(len(messages)-1): 
+        if numfail <= message_n[i]:
+            return messages[i]
+    return messages[-1]
+
+
 
 
 from py_mini_racer import py_mini_racer
 
-def is_where_always_true(where_clause):
+
+def is_where_always_true(where_clause:str)->bool:
     if where_clause is None:
         return False
 
@@ -61,6 +78,7 @@ def entrance():
 
 @app.route('/gate-check', methods=['POST'])
 def gate_check():
+    global failcount
     global n_completed
     data = request.get_json()
 
@@ -68,16 +86,17 @@ def gate_check():
     gate_code = data.get('gateCode')
     if gate_code == 'true':
         n_completed = max(1,n_completed)
-        return jsonify({'valid': True}) 
+        return jsonify({'result': 'success'}) 
     else:
-        return jsonify({'valid': False})
+        failcount+=1
+        return jsonify({'result': 'fail', 'message': spooky_message(failcount)})
 
 @app.route('/gate1', methods=['GET','POST']) # Added GET method
 def gate1():
     global failcount
     global n_completed; global lab_route 
     if request.method == 'GET':
-        if n_completed >= 1:
+        if n_completed >= 0:
             return render_template('gate1.html')
         else:
             return redirect(url_for(lab_route[n_completed]))
@@ -88,14 +107,14 @@ def gate1():
         return jsonify({'result': 'success'})
     else:
         failcount+=1
-        return jsonify({'result': where_clause, 'failcount': failcount})
+        return jsonify({'result': where_clause, 'message': spooky_message(failcount)})
 
 @app.route('/gate2', methods=['GET','POST']) # Added GET method
 def gate2():
     global failcount
     global n_completed; global lab_route 
     if request.method == 'GET':
-        if n_completed >= 2:
+        if n_completed >= 0:
             return render_template('gate2.html')
         else:
             return redirect(url_for(lab_route[n_completed]))
@@ -118,13 +137,13 @@ def gate2():
         return jsonify({'result': 'success'})
     else:
         failcount+=1
-        return jsonify({'result': 'Invalid username/password combination', 'failcount': failcount})
+        return jsonify({'result': 'Invalid username/password combination', 'message': spooky_message(failcount)})
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_post():
     global n_completed; global lab_route 
     if request.method == 'GET':
-        if n_completed >= 3:
+        if n_completed >= 0:
             return render_template('login.html')
         else:
             return redirect(url_for(lab_route[n_completed]))
@@ -149,12 +168,13 @@ def login_post():
         n_completed = max(4,n_completed)
         return jsonify({'result': 'success'})
     else:
-        return jsonify({'result': 'Invalid username/password combination'})
+        failcount+=1
+        return jsonify({'result': 'Invalid username/password combination', 'message': spooky_message(failcount)})
 
 @app.route('/prizes')
 def prizes():
     global n_completed; global lab_route 
-    if n_completed >= 4:
+    if n_completed >= 0:
         results = mongo.db.prizes.find({})
         return render_template('prizes.html', results=results)
     else:

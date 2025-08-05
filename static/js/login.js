@@ -19,9 +19,10 @@ $('#loginForm').on('submit', function(e) {
     .then(response => response.json())
     .then(data => {
         if (data.result === 'success') {
-            window.location.href = '/prizes';
+            window.location.href = '/exit';
         } else {
-            alert(data.result);
+            $('#failCountMessage').text(data.message);
+            alert(data.message);
         }
     })
     .catch((error) => {
