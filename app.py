@@ -9,7 +9,8 @@ app.config["SECRET_KEY"] = "your-secret-key"
 mongo = PyMongo(app)
 failcount = 0
 n_completed = 0
-lab_route = ['entrance','gate1','gate2','login','prizes']
+lab_route = ['entrance','gate1','gate2','gate3','exit']
+token = ['','spooky','scary','scary','skeletons','freedom']
 message_n = [1,2,3,5,8,13]
 messages = [
     "Hey, what's that sound. Do you really think you can leave this place?",
@@ -171,14 +172,14 @@ def login_post():
         failcount+=1
         return jsonify({'result': 'Invalid username/password combination', 'message': spooky_message(failcount), 'alert_message': "This soul's incantation or name is not permitted to leave"})
 
-# @app.route('/prizes')
-# def prizes():
-#     global n_completed; global lab_route 
-#     if n_completed >= 0:
-#         results = mongo.db.prizes.find({})
-#         return render_template('prizes.html', results=results)
-#     else:
-#         return redirect(url_for(lab_route[n_completed]))
+@app.route('/prizes')
+def prizes():
+    global n_completed; global lab_route 
+    if n_completed >= 0:
+        results = mongo.db.prizes.find({})
+        return render_template('prizes.html', results=results)
+    else:
+        return redirect(url_for(lab_route[n_completed]))
 
 @app.route('/exit')
 def exit():
@@ -188,3 +189,8 @@ def exit():
 @app.route('/trap')
 def trap():
     return render_template('trap.html')
+
+@app.errorhandler(404)
+def page_not_found(error):
+    global n_completed; global lab_route 
+    return redirect(url_for(lab_route[n_completed]))
