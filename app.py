@@ -153,7 +153,7 @@ def login_post():
     data = request.get_json()
     where_clause = data.get('$where').replace("incantation", "password").replace("name", "username")
     if is_where_always_true(where_clause) or ('this.username' not in where_clause or 'this.password' not in where_clause):
-        return jsonify({'result': 'THERE IS NO ESCAPE', 'message': spooky_message(failcount) , 'alert_message':'THERE IS NO ESCAPE'})
+        return jsonify({'result': 'THERE IS NO ESCAPE', 'message': spooky_message(failcount) , 'alert_message':'Are you trying to attack us? You should know, THERE IS NO ESCAPE'})
   
     users = mongo.db.users
     if not where_clause:
