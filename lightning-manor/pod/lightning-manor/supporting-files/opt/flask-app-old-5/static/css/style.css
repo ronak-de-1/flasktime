@@ -12,150 +12,94 @@
     --secondary: #CFD8DC;
     --secondary-dark: #B0BEC5;
     --red: #EF4836;
-  }
-  
-  * {
+}
+
+* {
     position: relative;
     box-sizing: border-box;
-  }
-  
-  body {
+}
+
+body {
     margin: 0;
     font-family: sans-serif;
     font-size: 18px;
     line-height: 28px;
     color: var(--black);
     background: var(--grey-light);
-  }
-  
-  /* Typography */
-  .center {
+}
+
+.center {
     text-align: center;
-  }
-  
-  h1 {
+}
+
+h1 {
     margin: 0.5em 0 1em;
     font-size: 26px;
     line-height: 1.2;
     color: var(--almost-black);
-  }
-  
-  h2 {
+}
+
+h2 {
     margin: 0.5em 0 1em;
     font-size: 20px;
     line-height: 1.2;
     color: var(--grey-dark);
-  }
-  
-  p {
+}
+
+p {
     margin: 24px 0;
-  }
-  
-  /* Register Section */
-  .register{
-      width: 100%;
-      height: 100%;
-      background-color: #eb6123 ;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  }
-  
-  .register-wrapper{
-      width: 60%;
-      height: 100%em;
-      display: flex;
-      box-shadow: 0 3rem 7rem rgb(0,0,0,0.5);
-  
-  }
-  
-  .register-left{
-      width: 35%;
-      background: linear-gradient(rgba(16,16,16,.6), rgba(26,26,26,.6)),
-      url(../images/register-photo.jpg) center no-repeat;
-      background-size: cover;
-  }
-  
-  .register-right{
-      width: 65%;
-      background-color: #eee;
-  }
-  
-  .register-heading{
-      font-family: Fruktur, serif;
-      font-size: 4rem;
-      text-align: center;
-      margin-bottom: 5rem;
-      color: #52006A;
-  }
-  
-  .register-low-heading{
-      font-family: Fruktur, serif;
-      font-size: 3rem;
-      text-align: center;
-      margin-bottom: 5rem;
-      color: #52006A;
-  }
-  
-  .register-right form{
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  }
-  
-  /* Cards */
-  .card-wrapper {
+}
+
+.card-wrapper {
     margin: 0 auto;
     padding: 90px 30px;
     flex-wrap: wrap;
     justify-content: center;
     display: flex;
-  }
-  
-  .card {
+}
+
+.card {
     margin: 0 30px 60px;
     padding: 20px 40px;
     width: 460px;
     box-shadow: 0 8px 26px -4px rgba(0,0,0,0.15);
     border-radius: 5px;
     background: var(--white);
-  }
-  
-  @media only screen and (max-width: 520px) {
+}
+
+@media only screen and (max-width: 520px) {
     .card-wrapper {
-      padding: 30px 0 0;
+        padding: 30px 0 0;
     }
-  }
-  
-  @media only screen and (max-width: 520px) {
+}
+
+@media only screen and (max-width: 520px) {
     .card {
-      margin: 0 0 30px;
-      width: 100%;
-      border-radius: 0;
+        margin: 0 0 30px;
+        width: 100%;
+        border-radius: 0;
     }
-  }
-  
-  /* Forms */
-  form {
+}
+
+form {
     transition: opacity .15s ease;
-  }
-  
-  form.loading {
+}
+
+form.loading {
     pointer-events: none;
     opacity: 0.75;
-  }
-  
-  label {
+}
+
+label {
     margin: 0 0 2px;
     font-size: 14px;
     line-height: 24px;
     letter-spacing: 1px;
     color: var(--grey-medium);
     display: block;
-  }
-  
-  .field {
+}
+
+.field {
     margin: 0 0 24px;
     padding: 11px 16px 9px;
     width: 100%;
@@ -168,27 +112,26 @@
     display: block;
     background: var(--almost-white);
     transition: border-color .15s ease;
-  }
-  
-  .field:focus {
+}
+
+.field:focus {
     border-color: var(--grey-medium);
     outline: none;
-  }
-  
-  .error {
+}
+
+.error {
     margin: 0;
     font-size: 16px;
     line-height: 26px;
     text-align: center;
     color: var(--red);
-  }
-  
-  .error--hidden {
+}
+
+.error--hidden {
     display: none;
-  }
-  
-  /* Buttons */
-  .btn {
+}
+
+.btn {
     margin: 0 0 24px;
     padding: 11px 30px 10px;
     font-size: 14px;
@@ -205,22 +148,109 @@
     display: inline-block;
     background: var(--primary);
     transition: color .15s ease, background-color .15s ease;
-  }
-  
-  .btn:hover {
+}
+
+.btn:hover {
     background: var(--primary-dark);
-  }
-  
-  .btn--secondary {
+}
+
+.btn--secondary {
     color: var(--almost-black);
     background: var(--secondary);
-  }
-  
-  .btn--secondary:hover {
+}
+
+.btn--secondary:hover {
     background: var(--secondary-dark);
-  }
-  
-  input[type=submit] {
+}
+
+input[type=submit] {
     margin: 34px auto 24px;
     display: block;
-  }
+}
+
+
+
+.register-content {
+    text-align: center;
+    color: var(--almost-white);
+    padding: 4rem 2rem;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 1rem;
+    max-width: 600px;
+    width: 100%;
+}
+
+.register-heading {
+    font-family: Fruktur, serif;
+     font-size: 4rem;
+    color: var(--white);
+    margin-bottom: 2rem;
+    white-space: nowrap; 
+    overflow-wrap: anywhere;
+}
+
+.register-low-heading {
+    font-family: Fruktur, serif;
+    font-size: 3rem;
+    color: var(--white);
+    margin-bottom: 2rem;
+}
+.register-low-heading-2 {
+    font-family: Fruktur, serif;
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 2rem;
+}
+
+.escape-btn {
+    font-size: 2rem;
+    padding: 1rem 3rem;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.escape-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+    color: #8B0000; 
+}
+
+#failCountMessage {
+  font-family: 'Creepster', cursive;
+  
+  font-size: 1.6em;
+
+  font-weight: normal;
+  
+  color: #a10e0e;
+
+  text-shadow: 1px 1px 2px #680909;
+
+  text-align: center;
+  margin: 20px 0;
+  padding: 10px;
+
+}
+.trap {
+  font-family: 'Creepster', cursive;
+  
+  font-size: 4em;
+
+  font-weight: normal;
+  
+  color: #a10e0e;
+
+  text-shadow: 1px 1px 2px #680909;
+
+  text-align: center;
+  margin: 20px 0;
+  padding: 10px;
+
+}

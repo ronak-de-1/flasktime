@@ -19,6 +19,14 @@
     box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'Creepster';
+  src: url('/static/Creepster/Creepster-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 body {
     margin: 0;
     font-family: sans-serif;
@@ -26,7 +34,15 @@ body {
     line-height: 28px;
     color: var(--black);
     background: var(--grey-light);
+
+    /* New style changes*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;  
+    overflow: hidden;   
 }
+
 
 .center {
     text-align: center;
@@ -50,7 +66,6 @@ p {
     margin: 24px 0;
 }
 
-/* Cards */
 .card-wrapper {
     margin: 0 auto;
     padding: 90px 30px;
@@ -82,7 +97,6 @@ p {
     }
 }
 
-/* Forms */
 form {
     transition: opacity .15s ease;
 }
@@ -103,9 +117,9 @@ label {
 
 .field {
     margin: 0 0 24px;
-    padding: 11px 16px 9px;
+    padding: 8px 12px;
     width: 100%;
-    font-size: 16px;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
     line-height: 26px;
     color: var(--almost-black);
     border: 1px solid var(--grey);
@@ -133,7 +147,6 @@ label {
     display: none;
 }
 
-/* Buttons */
 .btn {
     margin: 0 0 24px;
     padding: 11px 30px 10px;
@@ -176,38 +189,43 @@ input[type=submit] {
 .register-content {
     text-align: center;
     color: var(--almost-white);
-    padding: 4rem 2rem;
+    padding: 4vh 3vw; /* reduced padding slightly */
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 1rem;
-    max-width: 600px;
-    width: 100%;
+    max-width: 800px;
+    width: 90%;
+    max-height: none; /* remove height restriction so content always fits */
+    box-sizing: border-box;
+    overflow-y: visible; /* no clipping */
+    margin: auto;
 }
 
 .register-heading {
     font-family: Fruktur, serif;
-     font-size: 4rem;
+    font-size: clamp(1.5rem, 3vw, 3rem); /* slightly smaller max size */
     color: var(--white);
-    margin-bottom: 2rem;
-    white-space: nowrap; 
-    overflow-wrap: anywhere;
+    margin-bottom: 1.5vh;
+    white-space: normal;
+    word-break: break-word;
 }
 
 .register-low-heading {
     font-family: Fruktur, serif;
-    font-size: 3rem;
+    font-size: clamp(1.2rem, 2.5vw, 2.2rem); /* add scaling for first low heading */
     color: var(--white);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5vh;
 }
+
 .register-low-heading-2 {
     font-family: Fruktur, serif;
-    font-size: 2rem;
+    font-size: clamp(1rem, 2vw, 1.8rem); /* adjust second low heading */
     color: var(--white);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5vh;
 }
 
 .escape-btn {
-    font-size: 2rem;
-    padding: 1rem 3rem;
+    font-size: clamp(1rem, 2vw, 1.5rem); /* shrink responsively */
+    padding: 0.7rem 2rem; /* reduced padding */
     background: var(--primary);
     color: var(--white);
     border: none;
@@ -218,6 +236,7 @@ input[type=submit] {
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
+
 
 .escape-btn:hover {
     background: var(--primary-dark);

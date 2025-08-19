@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Lightning Manor Login</title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .register {
+        width: 100%;
+        height: 100vh;
+
+        background: linear-gradient(rgba(16, 16, 16, 0.6), rgba(26, 26, 26, 0.6)),
+                    url('/static/images/room4.jpg') center center / cover no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+    </style>
+  </head>
+  <body>
+    <section class="register">
+      <div class="register-content">
+        <h1 class="register-heading">Lightning Manor</h1>
+        <h1 class="register-low-heading">Lightning gate</h1>
+        <h1 class="register-low-heading-2">HEY ARE YOU TRYING TO ESCAPE? We are watching you very closely don't even try escaping here</h1>        
+        <div id="failCountMessage"></div>
+        <form id="loginForm">
+          <div class="input-group">
+            <label for="username" class="field-label">Name</label>
+            <input type="text" class="field" id="name" required>
+          </div>
+          <div class="input-group">
+            <label for="password" class="field-label">Incantation</label>
+            <input type="password" class="field" id="incantation" required>
+          </div>
+          <input type="submit" value="Escape" class="btn escape-btn">
+        </form>
+        <p style="color: white;">Token: skeletons</p>
+      </div>
+    </section>
+
+    <script src="/static/js/jquery-3.5.1.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/gate3.js"></script>
+  </body>
+</html>
