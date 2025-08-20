@@ -97,7 +97,8 @@ def gate1():
     global n_completed; global lab_route 
     if request.method == 'GET':
         if n_completed >= 1:
-            return render_template('gate1.html')
+            result = mongo.db.gates.find_one({ "name": "gate1" })
+            return render_template('gate1.html', token =  result["token"])
         else:
             return redirect(url_for(lab_route[n_completed]))
     data = request.get_json()
@@ -115,7 +116,8 @@ def gate2():
     global n_completed; global lab_route 
     if request.method == 'GET':
         if n_completed >= 2:
-            return render_template('gate2.html')
+            result = mongo.db.gates.find_one({ "name": "gate2" })
+            return render_template('gate2.html', token =  result["token"])
         else:
             return redirect(url_for(lab_route[n_completed]))
 
@@ -145,7 +147,8 @@ def login_post():
     global n_completed; global lab_route 
     if request.method == 'GET':
         if n_completed >= 3:
-            return render_template('gate3.html')
+            result = mongo.db.gates.find_one({ "name": "gate3" })
+            return render_template('gate3.html', token =  result["token"])
         else:
             return redirect(url_for(lab_route[n_completed]))
 
@@ -176,7 +179,8 @@ def login_post():
 def exit():
     global n_completed; global lab_route 
     if n_completed >= 4:
-        return render_template('exit.html')
+            result = mongo.db.gates.find_one({ "name": "exit" })
+            return render_template('exit.html', token =  result["token"])
     else:
         return redirect(url_for(lab_route[n_completed]))
 @app.route('/trap')
